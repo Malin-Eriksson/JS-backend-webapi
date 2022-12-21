@@ -119,14 +119,17 @@ controller.route('/create').post(authorize, async(httpRequest, httpResponse) => 
 })
 
     //update
-controller.route('/:articlenumber').put(authorize, async(httpRequest, httpResponse) => {
+controller.route('/update').put(authorize, async(httpRequest, httpResponse) => {
     if(!httpRequest.params.articleNumber)
         httpResponse.status(400).json({text: 'No article was specified'})
      else {
-        const product = await ProductSchema.findByIdAndUpdate (httpRequest.params.articleNumber, httpRequest.body)
+        const product = await ProductSchema.findById(httpRequest.params.articleNumber, httpRequest.body)
         if (product) {
-            httpResponse.status(201).json({text: `Product with articlenumber ${httpRequest.params.articlenumber} was updated`})
-        } else {
+            await ProductSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body)
+
+            if(product)
+                httpResponse.status(201).json({text: `Product with articlenumber ${httpRequest.params.articlenumber} was updated`})
+            else
                 httpResponse.status(400).json({text: `Something went wrong when trying to delete the product`})
         }
     }
@@ -140,9 +143,9 @@ controller.route('/:articleNumber').delete(authorize, async(httpRequest, httpRes
     if(!httpRequest.params.articleNumber)
         httpResponse.status(400).json({text: 'No article was specified'})
     else {
-        const product = await productSchema.findById (httpRequest.params.articleNumber)
+        const product = await ProductSchema.findById (httpRequest.params.articleNumber)
         if (product) {
-            await productSchema.remove(product)
+            await ProductSchema.remove(product)
             httpResponse.status(200).json({text: `Product with article number ${httpRequest.params.articleNumber} has been deleted.`})
         }
         else {
