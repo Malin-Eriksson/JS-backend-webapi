@@ -21,3 +21,4 @@ app.use('/api/authentication', require('./controllers/authenticationController')
 initMongoDB()
 app.listen(port, () => console.log(`WebApi is running on http://localhost:${port}`))
 
+//http://localhost:5000/api/products/product/:tag/1i2h4213h4bj

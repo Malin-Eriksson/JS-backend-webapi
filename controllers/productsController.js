@@ -92,17 +92,17 @@ controller.route('/product/details/:articleNumber').get(async(httpRequest, httpR
 
 // secure routes
     //create
-controller.route('/').post(authorize, async(httpRequest, httpResponse) => {
+controller.route('/create').post(authorize, async(httpRequest, httpResponse) => {
     const { name, description, price, category, tag, imageName, rating } = httpRequest.body
 
     if (!name || !price)
         httpResponse.status(400).json({text: 'Name and price is required'})
     
-    const product_exists = await productSchema.findOne({name})
+    const product_exists = await ProductSchema.findOne({name})
     if (product_exists)
         httpResponse.status(409).json({text: 'A product with the same name already exists.'})
     else {
-        const product = await productSchema.create({
+        const product = await ProductSchema.create({
             name,
             description,
             price,
@@ -119,16 +119,24 @@ controller.route('/').post(authorize, async(httpRequest, httpResponse) => {
 })
 
     //update
-    // controller.route('/').post(authorize, async(httpRequest, httpResponse) => {
-    //     if(!httpRequest.params.articleNumber)
-    //         httpResponse.status(400).json({text: 'No article was specified'})
-    //     else {
-    //         const product = await productSchema.findById (httpRequest.params.articleNumber)
-    //         if (product)
+controller.route('/:articlenumber').put(authorize, async(httpRequest, httpResponse) => {
+    if(!httpRequest.params.articleNumber)
+        httpResponse.status(400).json({text: 'No article was specified'})
+     else {
+        const product = await ProductSchema.findByIdAndUpdate (httpRequest.params.articleNumber, httpRequest.body)
+        if (product) {
+            httpResponse.status(201).json({text: `Product with articlenumber ${httpRequest.params.articlenumber} was updated`})
+        } else {
+                httpResponse.status(400).json({text: `Something went wrong when trying to delete the product`})
+        }
+    }
+})
+    
+
 
 
     //delete
-controller.route('/').delete(authorize, async(httpRequest, httpResponse) => {
+controller.route('/:articleNumber').delete(authorize, async(httpRequest, httpResponse) => {
     if(!httpRequest.params.articleNumber)
         httpResponse.status(400).json({text: 'No article was specified'})
     else {

@@ -7,9 +7,12 @@ const generateAccessToken = (id) => {
 }
 
 const authorize = (httpRequest, httpResponse, next) => {
-    if (httpRequest.authorization && httpRequest.headers.authorization.startsWith('Bearer')) {
+    // console.log(httpRequest.headers)
+    if (httpRequest.headers.authorization && httpRequest.headers.authorization.startsWith('Bearer')) {
         try {
-            const accessToken = httpRequest.headers.authorization.slit(' ')[1]
+            const accessToken = httpRequest.headers.authorization.split(' ')[1]
+            const secret = process.env.JWT_SECRET
+
             const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET)
             next()
         } catch {

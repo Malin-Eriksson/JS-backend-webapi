@@ -10,9 +10,10 @@ const userSchema = require('../schemas/userSchema')
 
 //unsecured routes
 controller.route('/signup').post(async(httpRequest, httpResponse)=> {
+
     const {firstName, lastName, email, password} = httpRequest.body
     if (!firstName || !lastName || !email || !password)
-        httpResponse.status(400).json ({text: 'First name, last name, e-mail address and password is required.'})
+        return httpResponse.status(400).json ({text: 'First name, last name, e-mail address and password is required.'})
     
     const userExists = await userSchema.findOne({email})
     if (userExists)
