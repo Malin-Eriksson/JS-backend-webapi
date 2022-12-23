@@ -119,23 +119,23 @@ controller.route('/create').post(authorize, async(httpRequest, httpResponse) => 
 })
 
     //update
-// controller.route('/:articleNumber').put(async(httpRequest, httpResponse) => {
-//     if(!httpRequest.params.articleNumber)
-//         httpResponse.status(400).json({text: 'No article was specified'})
-//      else {
-//         const product = await ProductSchema.findById(httpRequest.params.articleNumber, httpRequest.body)
-//         if (product) {
-//             await ProductSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body)
+controller.route('/update/:articleNumber').put(async(httpRequest, httpResponse) => {
+    if(!httpRequest.params.articleNumber)
+        httpResponse.status(400).json({text: 'No article was specified'})
+     else {
+        const product = await ProductSchema.findById(httpRequest.params.articleNumber, httpRequest.body)
+        if (product) {
+            await ProductSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body, { new: true })
 
-//             if(product)
-//                 httpResponse.status(201).json({text: `Product with articlenumber ${httpRequest.params.articlenumber} was updated`})
-//             else
-//                 httpResponse.status(400).json({text: `Something went wrong when trying to delete the product`})
-//         }
-//         else
-//             httpResponse.status(404).json({text: `The article ${httpRequest.params.articleNumber} was not found.`})
-//     }
-// })   
+            if(product)
+                httpResponse.status(201).json({text: `Product with articlenumber ${httpRequest.params.articleNumber} was updated`})
+            else
+                httpResponse.status(400).json({text: `Something went wrong when trying to delete the product`})
+        }
+        else
+            httpResponse.status(404).json({text: `The article ${httpRequest.params.articleNumber} was not found.`})
+    }
+})   
 
 
 // controller.route('/:articleNumber').put(async (httpRequest, httpResponse) => {
@@ -165,22 +165,22 @@ controller.route('/create').post(authorize, async(httpRequest, httpResponse) => 
 
 
 
-controller.route('/:articleNumber').put(authorize, async(httpRequest, httpResponse) => {
-        if(!httpRequest.params.articleNumber) {
-        httpResponse.status(400).json({text: 'No article was specified'})
-        }
+// controller.route('/update/:articleNumber').put(async(httpRequest, httpResponse) => {
+//         if(!httpRequest.params.articleNumber) {
+//         httpResponse.status(400).json({text: 'No article was specified'})
+//         }
  
-        console.log(httpRequest.params.articleNumber)
-        console.log(httpRequest.body)
+//         console.log(httpRequest.params.articleNumber)
+//         console.log(httpRequest.body)
 
-        const product = await ProductSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body, { new: true })
+//         const product = await ProductSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body, { new: true })
 
-        if (!product) {
-            return httpResponse.status(404).json({text: 'could not find that product'})
-        }
+//         if (!product) {
+//             return httpResponse.status(404).json({text: 'could not find that product'})
+//         }
 
-        httpResponse.status(200).json(product)
-    })
+//         httpResponse.status(200).json(product)
+//     })
 
 
 //     const {name, price, description, rating, tag, imageName, category} = httpRequest.body
@@ -230,7 +230,7 @@ controller.route('/:articleNumber').delete(authorize, async(httpRequest, httpRes
     if(!httpRequest.params.articleNumber)
         httpResponse.status(400).json({text: 'No article was specified'})
     else {
-        const product = await ProductSchema.findById (httpRequest.params.articleNumber)
+        const product = await ProductSchema.findById(httpRequest.params.articleNumber)
         if (product) {
             await ProductSchema.remove(product)
             httpResponse.status(200).json({text: `Product with article number ${httpRequest.params.articleNumber} has been deleted.`})
