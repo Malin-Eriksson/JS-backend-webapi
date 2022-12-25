@@ -119,7 +119,7 @@ controller.route('/create').post(authorize, async(httpRequest, httpResponse) => 
 })
 
     //update
-controller.route('/update/:articleNumber').put(async(httpRequest, httpResponse) => {
+controller.route('/update/:articleNumber').put(authorize, async(httpRequest, httpResponse) => {
     if(!httpRequest.params.articleNumber)
         httpResponse.status(400).json({text: 'No article was specified'})
      else {
@@ -136,92 +136,6 @@ controller.route('/update/:articleNumber').put(async(httpRequest, httpResponse) 
             httpResponse.status(404).json({text: `The article ${httpRequest.params.articleNumber} was not found.`})
     }
 })   
-
-
-// controller.route('/:articleNumber').put(async (httpRequest, httpResponse) => {
-//     const product = await updatedProduct ({
-//         _id: httpRequest.params.articleNumber,
-//         name: httpRequest.body.name,
-//         description: httpRequest.body.description,
-//         price: httpRequest.body.price,
-//         category: httpRequest.body.category,
-//         tag: httpRequest.body.tag,
-//         imageName: httpRequest.body.imageName,
-//         rating: httpRequest.body.rating
-//     })
-//     updatedProduct.updateOne({_id:
-//     httpRequest.params.id}, product).then(
-//         () => {
-//             httpRequest.status(201).json({
-//                 text: `Product updated successfully`
-//             })
-//         }
-//     ).catch(
-//         (error) => {
-//             httpResponse.status(400).json({error: error})
-//         }
-//     )
-// })
-
-
-
-// controller.route('/update/:articleNumber').put(async(httpRequest, httpResponse) => {
-//         if(!httpRequest.params.articleNumber) {
-//         httpResponse.status(400).json({text: 'No article was specified'})
-//         }
- 
-//         console.log(httpRequest.params.articleNumber)
-//         console.log(httpRequest.body)
-
-//         const product = await ProductSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body, { new: true })
-
-//         if (!product) {
-//             return httpResponse.status(404).json({text: 'could not find that product'})
-//         }
-
-//         httpResponse.status(200).json(product)
-//     })
-
-
-//     const {name, price, description, rating, tag, imageName, category} = httpRequest.body
-
-//     try {
-//         const filter = httpRequest.body.articleNumber
-//         await ProductSchema.findByIdAndUpdate({_id: filter}, {
-//             name: name,
-//             description: description,
-//             price: price,
-//             category: category,
-//             tag: tag,
-//             imageName: imageName,
-//             rating: rating
-//         }, {new: true})
-//         httpResponse.status(200).json()
-//     } catch {
-//         httpResponse.status(400).json()
-//     }
-
-// })
-
-//     if(!httpRequest.params.articleNumber)
-//         httpResponse.status(400).json({text: 'No article was specified'})
-//     else {  
-
-// controller.route('/:articleNumber').put(async(httpRequest, httpResponse) => {
-//     if(!httpRequest.params.articleNumber) {
-//     httpResponse.status(400).json({text: 'No article was specified'})
-//     }
-
-//     const product = await ProductSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body, { new: true }) {
-            
-//             if(product) {
-//                 httpResponse.status(201).json({text: `Product with articlenumber ${httpRequest.params.articleNumber} was updated`})
-//             }
-//             else
-//                 httpResponse.status(400).json({text: `Something went wrong when trying to update the product`})
-//         }
-//      }) 
-    
 
 
 
